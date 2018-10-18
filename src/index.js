@@ -38,8 +38,8 @@ export class SuDialog {
         this.$wrapper.classList.add('su-dialog__wrapper');
         this.$wrapper.innerHTML = '' +
             '<div class="su-dialog">\n' +
-            '    <div class="su-dialog__header">标题</div>\n' +
-            '    <div class="su-dialog__content">弹出框内容</div>\n' +
+            '    <div class="su-dialog__header"></div>\n' +
+            '    <div class="su-dialog__content"></div>\n' +
             '    <div class="su-dialog__footer"></div>\n' +
             '    <div class="su-dialog__resize">\n' +
             '        <div class="su-dialog__resize-top"></div>\n' +
@@ -66,7 +66,10 @@ export class SuDialog {
         this.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
         this.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
         this.$dialog.style.zIndex = this._uid + 2;
-        //
+
+        this.$dialog.querySelector('.su-dialog__header').innerHTML = this.$options.title || '';
+
+        this.$dialog.querySelector('.su-dialog__content').innerHTML = this.$options.content || '';
 
         (this.$options.buttons || []).forEach((but) => {
             let $button = document.createElement('button');
@@ -76,7 +79,6 @@ export class SuDialog {
             $button.onclick = but.handler;
             this.$dialog.querySelector('.su-dialog__footer').appendChild($button);
         });
-
 
         this.$title = this._query('.su-dialog__header', this.$dialog);
 
