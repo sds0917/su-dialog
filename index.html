@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>su-dialog</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        body {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+
+        *[class^="su-dialog"] {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            box-sizing: border-box;
+        }
+
+        .su-dialog__wrapper {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: fixed;
+            text-align: center;
+        }
+
+        .su-dialog {
+            width: 420px;
+            height: 150px;
+            min-width: 200px;
+            min-height: 200px;
+            font-size: 14px;
+            background: #fff;
+            text-align: left;
+            display: flex;
+            position: absolute;
+            overflow: hidden;
+            border-radius: 5px;
+            flex-direction: column;
+            border: 1px solid #ebeef5;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        }
+
+        .su-dialog__mask {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .4;
+            filter: alpha(opacity=40);
+            background: #000;
+        }
+
+        .su-dialog__proxy {
+            display: none;
+            border-radius: 5px;
+            position: absolute;
+            border: 1px dashed #95b8e7;
+            transition: all .2s ease-in-out, top .05s, left .05s;
+        }
+
+        .su-dialog__resize > div {
+            position: absolute;
+        }
+
+        .su-dialog__resize-top,
+        .su-dialog__resize-bottom {
+            height: 5px;
+            left: 5px;
+            right: 5px;
+        }
+
+        .su-dialog__resize-top {
+            top: 0;
+            cursor: n-resize
+        }
+
+        .su-dialog__resize-bottom {
+            bottom: 0;
+            cursor: s-resize
+        }
+
+        .su-dialog__resize-left,
+        .su-dialog__resize-right {
+            width: 5px;
+            top: 5px;
+            bottom: 5px;
+        }
+
+        .su-dialog__resize-left {
+            left: 0;
+            cursor: w-resize
+        }
+
+        .su-dialog__resize-right {
+            right: 0;
+            cursor: e-resize
+        }
+
+        .su-dialog__resize-left-top,
+        .su-dialog__resize-right-top,
+        .su-dialog__resize-left-bottom,
+        .su-dialog__resize-right-bottom {
+            width: 5px;
+            height: 5px;
+        }
+
+        .su-dialog__resize-left-top {
+            left: 0;
+            top: 0;
+            cursor: nw-resize
+        }
+
+        .su-dialog__resize-right-top {
+            right: 0;
+            top: 0;
+            cursor: ne-resize
+        }
+
+        .su-dialog__resize-left-bottom {
+            left: 0;
+            bottom: 0;
+            cursor: sw-resize
+        }
+
+        .su-dialog__resize-right-bottom {
+            right: 0;
+            bottom: 0;
+            cursor: se-resize
+        }
+
+        .su-dialog__header {
+            cursor: move;
+            width: 100%;
+            line-height: 30px;
+        }
+
+        .su-dialog__content {
+            flex: 1;
+            width: 100%;
+        }
+
+        .su-dialog__footer {
+            width: 100%;
+            line-height: 30px;
+            border-top: 1px solid #ddd;
+            background-color: #eeeef2;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app"></div>
+<div id="app2"></div>
+</body>
+
+</html>
