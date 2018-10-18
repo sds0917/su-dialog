@@ -147,20 +147,61 @@
 
         .su-dialog__header {
             cursor: move;
-            width: 100%;
-            line-height: 30px;
+            text-align: left;
+            border-bottom: 1px solid transparent;
         }
 
         .su-dialog__content {
+            padding: 10px;
             flex: 1;
             width: 100%;
         }
 
         .su-dialog__footer {
+            text-align: right;
+            border-top: 1px solid transparent;
+        }
+
+        .su-dialog__header,
+        .su-dialog__footer {
             width: 100%;
+            padding: 0 10px;
             line-height: 30px;
-            border-top: 1px solid #ddd;
-            background-color: #eeeef2;
+        }
+
+        .su-dialog__footer:after {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            width: 0;
+            vertical-align: middle;
+        }
+
+        .su-dialog__footer-button {
+            cursor: pointer;
+            padding: 0 16px;
+            height: 24px;
+            vertical-align: middle;
+            line-height: normal;
+            color: #000;
+            font-size: 14px;
+            border: 1px solid transparent;
+            outline: none;
+            margin-left: 10px;
+            display: inline-block;
+            transition: all .3s;
+        }
+
+        .su-dialog__footer-button:hover {
+            border-color: #ccc;
+            background-color: #eee;
+        }
+
+        .su-dialog__header,
+        .su-dialog__footer,
+        .su-dialog__footer-button {
+            background-color: #fafafa;
+            border-color: #dfdfdf;
         }
     </style>
 </head>
