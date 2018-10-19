@@ -10,13 +10,13 @@ let $dialog = new SuDialog({
     },
     buttons: [{
         text: '确定',
-        handler() {
-            console.log('确定', this);
+        handler(event, $dialog) {
+            console.log('确定', $dialog);
         }
     }, {
         text: '取消',
         handler() {
-            console.log('取消', this);
+            console.log('取消', $dialog);
         }
     }]
 });

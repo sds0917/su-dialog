@@ -146,9 +146,39 @@
         }
 
         .su-dialog__header {
-            cursor: move;
+            display: flex;
             text-align: left;
+            vertical-align: middle;
             border-bottom: 1px solid transparent;
+        }
+
+        .su-dialog__header-title {
+            flex: 1;
+            cursor: move;
+        }
+
+        [class*="su-dialog__header-icon-"] {
+            width: 18px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        [class*="su-dialog__header-icon-"]:last-child {
+            margin-right: 0;
+        }
+
+        [class*="su-dialog__header-icon-"] > svg {
+            cursor: pointer;
+            font-size: 18px;
+            overflow: hidden;
+            margin-top: -2px;
+            fill: currentColor;
+            transition: all .3s;
+            vertical-align: middle;
+        }
+
+        [class*="su-dialog__header-icon-"]:hover > svg {
+            fill: #666;
         }
 
         .su-dialog__content {
@@ -179,7 +209,7 @@
 
         .su-dialog__footer-button {
             cursor: pointer;
-            padding: 0 16px;
+            padding: 0 10px;
             height: 24px;
             vertical-align: middle;
             line-height: normal;

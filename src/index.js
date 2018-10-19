@@ -1,6 +1,13 @@
 export class SuDialog {
 
     constructor(options) {
+        if (typeof SuDialog.options === 'undefined') {
+            SuDialog.options = {
+                exitScreenIcon: '<span title="进入全屏" class="su-dialog__header-icon-exit"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"></path></svg></span>',
+                fullScreenIcon: '<span title="退出全屏" class="su-dialog__header-icon-full"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"></path></svg></span>',
+                closeIcon: '<span title="关闭" class="su-dialog__header-icon-close"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M558.933333 529.066667l285.866667 285.866666-29.866667 29.866667-285.866666-285.866667-285.866667 285.866667-29.866667-29.866667 285.866667-285.866666L213.333333 243.2l29.866667-29.866667 285.866667 285.866667L814.933333 213.333333l29.866667 29.866667-285.866667 285.866667z"></path></svg></span>'
+            };
+        }
         if (typeof SuDialog.uid$3 === 'undefined') {
             SuDialog.uid$3 = 2000;
         }
@@ -11,9 +18,9 @@ export class SuDialog {
     _init(options) {
         this._uid = SuDialog.uid$3;
         SuDialog.uid$3 = SuDialog.uid$3 + 3;
-        this.$options = this._deepExtend({
+        this.$options = this._deepExtend(this._deepExtend(this._deepExtend({}, SuDialog.options), {
             sdsd: 's孙东升'
-        }, options || {});
+        }), options || {});
         if (this.$options.el) {
             this._mount(this.$options.el);
         }
@@ -67,17 +74,22 @@ export class SuDialog {
         this.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
         this.$dialog.style.zIndex = this._uid + 2;
 
-        this.$dialog.querySelector('.su-dialog__header').innerHTML = this.$options.title || '';
+        this._query('.su-dialog__header', this.$dialog).innerHTML = '' +
+            '    <span class="su-dialog__header-title">' + (this.$options.title || '') + '</span>\n' +
+            this.$options.exitScreenIcon + '\n' +
+            this.$options.fullScreenIcon + '\n' +
+            this.$options.closeIcon;
 
-        this.$dialog.querySelector('.su-dialog__content').innerHTML = this.$options.content || '';
+        this._query('.su-dialog__content', this.$dialog).innerHTML = this.$options.content || '';
 
-        (this.$options.buttons || []).forEach((but) => {
+        (this.$options.buttons || []).forEach((but, index) => {
             let $button = document.createElement('button');
             $button.classList.add('su-dialog__footer-button');
             $button.title = but.text;
             $button.innerHTML = but.text;
-            $button.onclick = but.handler;
-            this.$dialog.querySelector('.su-dialog__footer').appendChild($button);
+            $button.setAttribute('id', but.domId = 'but-' + this._uid + index);
+            // $button.onclick = but.handler;
+            this._query('.su-dialog__footer', this.$dialog).appendChild($button);
         });
 
         this.$title = this._query('.su-dialog__header', this.$dialog);
@@ -114,6 +126,12 @@ export class SuDialog {
                 dragging: false
             };
         }
+
+        (this.$options.buttons || []).forEach((but) => {
+            this._query('#' + but.domId, this.$dialog).onclick = function (event) {
+                but.handler && but.handler.call(this, event, vm);
+            }
+        });
 
         const downFn = function (event) {
                 let trect = vm.$title.getBoundingClientRect();
@@ -229,7 +247,7 @@ export class SuDialog {
             });
         });
 
-        vm.$title.addEventListener('mousedown', function (event) {
+        vm._query('.su-dialog__header-title', vm.$title).addEventListener('mousedown', function (event) {
             if (vm._data.dragging) {
                 return false;
             }
