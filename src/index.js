@@ -3,8 +3,8 @@ export class SuDialog {
     constructor(options) {
         if (typeof SuDialog.options === 'undefined') {
             SuDialog.options = {
-                exitScreenIcon: '<span title="进入全屏" class="su-dialog__header-icon-exit"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"></path></svg></span>',
-                fullScreenIcon: '<span title="退出全屏" class="su-dialog__header-icon-full"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"></path></svg></span>',
+                exitScreenIcon: '<span title="退出全屏" class="su-dialog__header-icon-exit"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"></path></svg></span>',
+                fullScreenIcon: '<span title="进入全屏" class="su-dialog__header-icon-full"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"></path></svg></span>',
                 closeIcon: '<span title="关闭" class="su-dialog__header-icon-close"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M558.933333 529.066667l285.866667 285.866666-29.866667 29.866667-285.866666-285.866667-285.866667 285.866667-29.866667-29.866667 285.866667-285.866666L213.333333 243.2l29.866667-29.866667 285.866667 285.866667L814.933333 213.333333l29.866667 29.866667-285.866667 285.866667z"></path></svg></span>'
             };
         }
@@ -76,9 +76,9 @@ export class SuDialog {
 
         this._query('.su-dialog__header', this.$dialog).innerHTML = '' +
             '    <span class="su-dialog__header-title">' + (this.$options.title || '') + '</span>\n' +
-            this.$options.exitScreenIcon + '\n' +
-            this.$options.fullScreenIcon + '\n' +
-            this.$options.closeIcon;
+            '    ' + this.$options.exitScreenIcon + '\n' +
+            '    ' + this.$options.fullScreenIcon + '\n' +
+            '    ' + this.$options.closeIcon;
 
         this._query('.su-dialog__content', this.$dialog).innerHTML = this.$options.content || '';
 
@@ -88,7 +88,6 @@ export class SuDialog {
             $button.title = but.text;
             $button.innerHTML = but.text;
             $button.setAttribute('id', but.domId = 'but-' + this._uid + index);
-            // $button.onclick = but.handler;
             this._query('.su-dialog__footer', this.$dialog).appendChild($button);
         });
 
@@ -117,7 +116,55 @@ export class SuDialog {
         }
     }
 
+    _full(_target) {
+        if (this._fulldata) {
+            return false;
+        }
+        this._fulldata = this.$dialog.getBoundingClientRect();
+        let _transition = this.$dialog.style.transition;
+        this.$dialog.style.transition = 'top .3s, left .3s, width .3s, height .3s';
+        this.$dialog.style.top = '0';
+        this.$dialog.style.left = '0';
+        this.$dialog.style.width = '100%';
+        this.$dialog.style.height = '100%';
+        setTimeout(() => {
+            this.$dialog.style.transition = _transition;
+        }, 3e2);
+    }
+
+    _exit(_target) {
+        if (!this._fulldata) {
+            return false;
+        }
+        let _transition = this.$dialog.style.transition;
+        this.$dialog.style.transition = 'top .3s, left .3s, width .3s, height .3s';
+        this.$dialog.style.top = this._fulldata.top + 'px';
+        this.$dialog.style.left = this._fulldata.left + 'px';
+        this.$dialog.style.width = this._fulldata.width + 'px';
+        this.$dialog.style.height = this._fulldata.height + 'px';
+        this._fulldata = undefined;
+        setTimeout(() => {
+            this.$dialog.style.transition = _transition;
+        }, 3e2);
+    }
+
+    _close(_target) {
+        let opts = this.$options;
+        if (opts.onBeforeClose && opts.onBeforeClose.call(this, this, _target) == false) {
+            return false;
+        }
+        this.$wrapper.style.transition = 'opacity .3s';
+        this.$wrapper.style.opacity = '0';
+        setTimeout(() => {
+            this.$wrapper.removeAttribute('class');
+            this.$wrapper.removeAttribute('style');
+            this.$wrapper.innerHTML = '';
+            opts.onClose && opts.onClose.call(this, this, _target);
+        }, 3e2);
+    }
+
     _initEvents() {
+        const _icons = 'su-dialog__header-icon-';
         let vm = this;
         if (typeof this._data === 'undefined') {
             this._data = {
@@ -131,6 +178,18 @@ export class SuDialog {
             this._query('#' + but.domId, this.$dialog).onclick = function (event) {
                 but.handler && but.handler.call(this, event, vm);
             }
+        });
+
+        vm.$dialog.querySelectorAll('[class*="' + _icons + '"]').forEach(($el) => {
+            let _class = (function () {
+                let _classes = Array.prototype.filter.call(($el.classList || []), (_cla) => {
+                    return _cla.indexOf(_icons) != -1;
+                });
+                return (_classes.length ? _classes[0] : '').replace(_icons, '');
+            }());
+            $el.addEventListener('click', function () {
+                vm['_' + _class] && vm['_' + _class].call(vm, $el);
+            });
         });
 
         const downFn = function (event) {

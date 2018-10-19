@@ -18,7 +18,13 @@ let $dialog = new SuDialog({
         handler() {
             console.log('取消', $dialog);
         }
-    }]
+    }],
+    onBeforeClose() {
+        console.log('onBeforeClose');
+    },
+    onClose() {
+        console.log('onClose');
+    }
 });
 
 console.log($dialog);
