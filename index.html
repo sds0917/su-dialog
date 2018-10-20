@@ -35,6 +35,8 @@
             bottom: 0;
             left: 0;
             right: 0;
+            opacity: 0;
+            display: none;
             position: fixed;
             text-align: center;
         }
@@ -234,11 +236,27 @@
             border-color: #dfdfdf;
         }
     </style>
+    <link href="/static/demo.css" rel="stylesheet"/>
 </head>
 
 <body>
-<div id="app"></div>
-<div id="app2"></div>
+<div class="page-container">
+    <section class="content">
+        <h2 id="dialog-dui-hua-kuang">Dialog 对话框</h2>
+        <p>在保留当前页面状态的情况下，告知用户并承载相关操作。</p>
+        <h3 id="ji-ben-yong-fa">基本用法</h3>
+        <p>Dialog 弹出一个对话框，适合需要定制性更大的场景。</p>
+        <div class="tip">
+            <p><code>before-close</code> 仅当用户通过点击关闭图标或遮罩关闭 Dialog 时起效。如果你在 <code>footer</code> 具名 slot 里添加了用于关闭 Dialog 的按钮，那么可以在按钮的点击回调函数里加入 <code>before-close</code> 的相关逻辑。</p>
+        </div>
+        <div class="demo-block demo-box demo-zh-CN demo-dialog hover">
+            <div class="source">
+                <button class="su-dialog__footer-button" id="button">点击打开 Dialog</button>
+                <div id="dialog"></div>
+            </div>
+        </div>
+    </section>
+</div>
 </body>
 
 </html>

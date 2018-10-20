@@ -1,7 +1,7 @@
 import {SuDialog} from './index.js';
 
 let $dialog = new SuDialog({
-    el: '#app',
+    el: '#dialog',
     title: '新轮子',
     content: '<img src="/static/ewm.png" width="200" style="position: absolute;top: calc((100% - 200px) / 2);left: calc((100% - 200px) / 2);" />',
     style: {
@@ -27,4 +27,7 @@ let $dialog = new SuDialog({
     }
 });
 
-console.log($dialog);
+document.querySelector('#button').onclick = function () {
+    console.log($dialog);
+    $dialog._open();
+};

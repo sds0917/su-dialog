@@ -39,7 +39,6 @@ export class SuDialog {
     }
 
     _mount(el) {
-        let vm = this;
         // wrapper
         this.$wrapper = el && this.inBrowser ? this._query(el) : undefined;
         this.$wrapper.classList.add('su-dialog__wrapper');
@@ -69,9 +68,6 @@ export class SuDialog {
                 this.$dialog.style[key] = this.$options.style[key];
             }
         }
-        let rect = this.$dialog.getBoundingClientRect();
-        this.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
-        this.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
         this.$dialog.style.zIndex = this._uid + 2;
 
         this._query('.su-dialog__header', this.$dialog).innerHTML = '' +
@@ -161,6 +157,15 @@ export class SuDialog {
             this.$wrapper.innerHTML = '';
             opts.onClose && opts.onClose.call(this, this, _target);
         }, 3e2);
+    }
+
+    _open() {
+        this.$wrapper.style.display = 'initial';
+        let rect = this.$dialog.getBoundingClientRect();
+        this.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
+        this.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
+        this.$wrapper.style.transition = 'opacity .3s';
+        this.$wrapper.style.opacity = '1';
     }
 
     _initEvents() {
