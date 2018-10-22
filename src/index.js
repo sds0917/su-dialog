@@ -41,6 +41,9 @@ export class SuDialog {
     _mount(el) {
         // wrapper
         this.$wrapper = el && this.inBrowser ? this._query(el) : undefined;
+        if (this.$wrapper.$dialog) {
+            return this.$wrapper.$dialog._open();
+        }
         this.$wrapper.classList.add('su-dialog__wrapper');
         this.$wrapper.innerHTML = '' +
             '<div class="su-dialog">\n' +
@@ -61,6 +64,7 @@ export class SuDialog {
             '<div class="su-dialog__mask"></div>\n' +
             '<div class="su-dialog__proxy"></div>';
         this.$wrapper.style.zIndex = this._uid + 2;
+        this.$wrapper.$dialog = this;
 
         this.$dialog = this._query('.su-dialog', this.$wrapper);
         if (this.$options.style) {
@@ -152,9 +156,10 @@ export class SuDialog {
         this.$wrapper.style.transition = 'opacity .3s';
         this.$wrapper.style.opacity = '0';
         setTimeout(() => {
-            this.$wrapper.removeAttribute('class');
+            this.$wrapper.style.display = 'none';
+            /*this.$wrapper.removeAttribute('class');
             this.$wrapper.removeAttribute('style');
-            this.$wrapper.innerHTML = '';
+            this.$wrapper.innerHTML = '';*/
             opts.onClose && opts.onClose.call(this, this, _target);
         }, 3e2);
     }
