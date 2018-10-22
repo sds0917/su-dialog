@@ -11,7 +11,8 @@ export class SuDialog {
         if (typeof SuDialog.uid$3 === 'undefined') {
             SuDialog.uid$3 = 2000;
         }
-        this.animates = ["bounce", "flash", "pulse", "rubberBand", "shake", "swing", "tada", "wobble", "jello", "bounceIn", "bounceInDown", "bounceInLeft", "bounceInRight", "bounceInUp", "bounceOut", "bounceOutDown", "bounceOutLeft", "bounceOutRight", "bounceOutUp", "fadeIn", "fadeInDown", "fadeInDownBig", "fadeInLeft", "fadeInLeftBig", "fadeInRight", "fadeInRightBig", "fadeInUp", "fadeInUpBig", "fadeOut", "fadeOutDown", "fadeOutDownBig", "fadeOutLeft", "fadeOutLeftBig", "fadeOutRight", "fadeOutRightBig", "fadeOutUp", "fadeOutUpBig", "flip", "flipInX", "flipInY", "flipOutX", "flipOutY", "lightSpeedIn", "lightSpeedOut", "rotateIn", "rotateInDownLeft", "rotateInDownRight", "rotateInUpLeft", "rotateInUpRight", "rotateOut", "rotateOutDownLeft", "rotateOutDownRight", "rotateOutUpLeft", "rotateOutUpRight", "slideInUp", "slideInDown", "slideInLeft", "slideInRight", "slideOutUp", "slideOutDown", "slideOutLeft", "slideOutRight", "zoomIn", "zoomInDown", "zoomInLeft", "zoomInRight", "zoomInUp", "zoomOut", "zoomOutDown", "zoomOutLeft", "zoomOutRight", "zoomOutUp", "hinge", "jackInTheBox", "rollIn", "rollOut"];
+        this.animatesIn = ["bounceIn", "bounceInDown", "bounceInLeft", "bounceInRight", "bounceInUp", "fadeIn", "fadeInDown", "fadeInDownBig", "fadeInLeft", "fadeInLeftBig", "fadeInRight", "fadeInRightBig", "fadeInUp", "fadeInUpBig", "flipInX", "flipInY", "lightSpeedIn", "rotateIn", "rotateInDownLeft", "rotateInDownRight", "rotateInUpLeft", "rotateInUpRight", "slideInUp", "slideInDown", "slideInLeft", "slideInRight", "zoomIn", "zoomInDown", "zoomInLeft", "zoomInRight", "zoomInUp", "bounce", "flash", "pulse", "rubberBand", "shake", "swing", "tada", "wobble", "jello", "flip", "hinge", "jackInTheBox", "rollIn"];
+        this.animatesOut = ["bounceOut", "bounceOutDown", "bounceOutLeft", "bounceOutRight", "bounceOutUp", "fadeOut", "fadeOutDown", "fadeOutDownBig", "fadeOutLeft", "fadeOutLeftBig", "fadeOutRight", "fadeOutRightBig", "fadeOutUp", "fadeOutUpBig", "flipOutX", "flipOutY", "lightSpeedOut", "rotateOut", "rotateOutDownLeft", "rotateOutDownRight", "rotateOutUpLeft", "rotateOutUpRight", "slideOutUp", "slideOutDown", "slideOutLeft", "slideOutRight", "zoomOut", "zoomOutDown", "zoomOutLeft", "zoomOutRight", "zoomOutUp", "rollOut"];
         this.inBrowser = typeof window !== 'undefined';
         this._init(options);
     }
@@ -151,7 +152,7 @@ export class SuDialog {
 
     _close(_target) {
         let vm = this,
-            animate = vm.animates[Math.round(Math.random() * (vm.animates.length - 1))],
+            animate = vm.animatesOut[Math.round(Math.random() * (vm.animatesOut.length - 1))],
             opts = this.$options;
         if (opts.onBeforeClose && opts.onBeforeClose.call(this, this, _target) == false) {
             return false;
@@ -176,12 +177,13 @@ export class SuDialog {
             rect = vm.$dialog.getBoundingClientRect();
         vm.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
         vm.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
-        let animate = vm.animates[Math.round(Math.random() * (vm.animates.length - 1))];
+        let animate = vm.animatesIn[Math.round(Math.random() * (vm.animatesIn.length - 1))];
         vm.$dialog.addEventListener('animationend', function animationendFn() {
-            vm.$dialog.classList.remove(animate, 'animated');
+            vm.$dialog.classList.remove('sds', 'animated');
+            console.log(animate);
             vm.$dialog.removeEventListener('animationend', animationendFn);
         });
-        vm.$dialog.classList.add(animate, 'animated');
+        vm.$dialog.classList.add('sds', 'animated');
     }
 
     _initEvents() {
