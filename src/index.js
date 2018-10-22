@@ -11,6 +11,7 @@ export class SuDialog {
         if (typeof SuDialog.uid$3 === 'undefined') {
             SuDialog.uid$3 = 2000;
         }
+        this.animates = ["bounce", "flash", "pulse", "rubberBand", "shake", "swing", "tada", "wobble", "jello", "bounceIn", "bounceInDown", "bounceInLeft", "bounceInRight", "bounceInUp", "bounceOut", "bounceOutDown", "bounceOutLeft", "bounceOutRight", "bounceOutUp", "fadeIn", "fadeInDown", "fadeInDownBig", "fadeInLeft", "fadeInLeftBig", "fadeInRight", "fadeInRightBig", "fadeInUp", "fadeInUpBig", "fadeOut", "fadeOutDown", "fadeOutDownBig", "fadeOutLeft", "fadeOutLeftBig", "fadeOutRight", "fadeOutRightBig", "fadeOutUp", "fadeOutUpBig", "flip", "flipInX", "flipInY", "flipOutX", "flipOutY", "lightSpeedIn", "lightSpeedOut", "rotateIn", "rotateInDownLeft", "rotateInDownRight", "rotateInUpLeft", "rotateInUpRight", "rotateOut", "rotateOutDownLeft", "rotateOutDownRight", "rotateOutUpLeft", "rotateOutUpRight", "slideInUp", "slideInDown", "slideInLeft", "slideInRight", "slideOutUp", "slideOutDown", "slideOutLeft", "slideOutRight", "zoomIn", "zoomInDown", "zoomInLeft", "zoomInRight", "zoomInUp", "zoomOut", "zoomOutDown", "zoomOutLeft", "zoomOutRight", "zoomOutUp", "hinge", "jackInTheBox", "rollIn", "rollOut"];
         this.inBrowser = typeof window !== 'undefined';
         this._init(options);
     }
@@ -149,28 +150,38 @@ export class SuDialog {
     }
 
     _close(_target) {
-        let opts = this.$options;
+        let vm = this,
+            animate = vm.animates[Math.round(Math.random() * (vm.animates.length - 1))],
+            opts = this.$options;
         if (opts.onBeforeClose && opts.onBeforeClose.call(this, this, _target) == false) {
             return false;
         }
-        this.$wrapper.style.transition = 'opacity .3s';
-        this.$wrapper.style.opacity = '0';
-        setTimeout(() => {
-            this.$wrapper.style.display = 'none';
-            /*this.$wrapper.removeAttribute('class');
-            this.$wrapper.removeAttribute('style');
-            this.$wrapper.innerHTML = '';*/
+        vm.$dialog.addEventListener('animationend', function animationendFn() {
+            vm.$dialog.classList.remove(animate, 'animated');
+            vm.$dialog.removeEventListener('animationend', animationendFn);
+            vm.$wrapper.style.display = 'none';
             opts.onClose && opts.onClose.call(this, this, _target);
-        }, 3e2);
+        });
+        vm.$dialog.classList.add(animate, 'animated');
+        /*this.$wrapper.style.transition = 'opacity .3s';
+        this.$wrapper.style.opacity = '0';
+        this.$wrapper.removeAttribute('class');
+        this.$wrapper.removeAttribute('style');
+        this.$wrapper.innerHTML = '';*/
     }
 
     _open() {
-        this.$wrapper.style.display = 'initial';
-        let rect = this.$dialog.getBoundingClientRect();
-        this.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
-        this.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
-        this.$wrapper.style.transition = 'opacity .3s';
-        this.$wrapper.style.opacity = '1';
+        this.$wrapper.style.display = 'block';
+        let vm = this,
+            rect = vm.$dialog.getBoundingClientRect();
+        vm.$dialog.style.top = 'calc((100% - ' + rect.height + 'px) / 2)';
+        vm.$dialog.style.left = 'calc((100% - ' + rect.width + 'px) / 2)';
+        let animate = vm.animates[Math.round(Math.random() * (vm.animates.length - 1))];
+        vm.$dialog.addEventListener('animationend', function animationendFn() {
+            vm.$dialog.classList.remove(animate, 'animated');
+            vm.$dialog.removeEventListener('animationend', animationendFn);
+        });
+        vm.$dialog.classList.add(animate, 'animated');
     }
 
     _initEvents() {
